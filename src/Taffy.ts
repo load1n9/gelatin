@@ -43,7 +43,7 @@ export class Taffy {
    */
   newLeaf(layout: Style, measure: any = null): Node {
     if (measure !== null) return this.newLeafWithMeasure(layout, measure);
-    return new Node(wasm.taffy_new_leaf(this.#ptr, layout.ptr))
+    return new Node(wasm.taffy_new_leaf(this.#ptr, layout.ptr));
   }
 
   /**
@@ -133,7 +133,7 @@ export class Taffy {
    * Returns the number of children of the `parent` [`Node`]
    */
   childCount(parent: Node): number {
-    throw new Error("not implemented");
+    return wasm.taffy_child_count(this.#ptr, parent.ptr);
   }
 
   /**

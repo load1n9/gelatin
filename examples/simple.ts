@@ -28,3 +28,5 @@ console.log("s2: " + s2.ptr);
 // new leaf
 const l1 = t1.newLeaf(s1);
 console.log("l1: " + l1.ptr);
+
+console.log("child count: " + t1.childCount(l1));

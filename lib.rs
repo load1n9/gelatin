@@ -38,5 +38,18 @@ pub fn taffy_new_leaf(taffy: u32, style: u32) -> u32 {
     let style = unsafe { &*style };
 
     let leaf = taffy.borrow_mut().new_leaf(style.borrow_mut().to_owned());
-    Box::into_raw(Box::new(WasmRefCell::new(leaf))) as u32
+    Box::into_raw(Box::new(WasmRefCell::new(leaf.unwrap()))) as u32
 }
+
+#[wasm_bindgen]
+pub fn taffy_child_count(taffy: u32, node: u32) -> usize {
+    let taffy = taffy as *mut WasmRefCell<Taffy>;
+    wasm_bindgen::__rt::assert_not_null(taffy);
+    let taffy = unsafe { &*taffy };
+
+    let node = node as *mut WasmRefCell<Node>;
+    wasm_bindgen::__rt::assert_not_null(node);
+    let node = unsafe { &*node };
+
+    taffy.borrow_mut().child_count(node.borrow_mut().to_owned()).unwrap()
+} 
