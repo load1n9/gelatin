@@ -1,0 +1,6 @@
+{
+    "tasks": {
+        "build": "deno run -A --unstable scripts/build.ts stretched_marshmallow",
+        "test": "deno run -A --unstable examples/simple.ts"
+    }
+}
