@@ -1,13 +1,11 @@
 // deno-lint-ignore-file no-explicit-any no-unused-vars
-import { Layout, Style } from "./types.ts";
+import { Layout } from "./types.ts";
+import { Style } from "./Style.ts";
 import { Node } from "./Node.ts";
 import * as wasm from "./wasm.js";
+import { notLoadedError } from "./utils.ts";
 
-const notLoadedError = new Error(
-  "The taffy wasm module needs to be loaded before using",
-);
-
-let loaded = false;
+export let loaded = false;
 
 /**
  * loads the taffy wasm module
@@ -28,9 +26,9 @@ export class Taffy {
     if (!loaded) {
       throw notLoadedError;
     }
-    this.#ptr = !fromPtr
-      ? capacity ? wasm.taffy_with_capacity(capacity) : wasm.taffy_new()
-      : capacity;
+    this.#ptr = capacity
+      ? !fromPtr ? wasm.taffy_with_capacity(capacity) : capacity
+      : wasm.taffy_new();
   }
 
   /**
@@ -41,18 +39,18 @@ export class Taffy {
   }
 
   /**
-   * Creates and adds a new unattached leaf node to the tree, and returns the [`NodeId`] of the new node
+   * Creates and adds a new unattached leaf node to the tree, and returns the new node
    */
-  newLeaf(layout: Style, measure: any = null): number {
+  newLeaf(layout: Style, measure: any = null): Node {
     if (measure !== null) return this.newLeafWithMeasure(layout, measure);
-    throw new Error("not implemented");
+    return new Node(wasm.taffy_new_leaf(this.#ptr, layout.ptr))
   }
 
   /**
    * Creates and adds a new unattached leaf node to the tree, and returns the [`NodeId`] of the new node
    * Creates and adds a new leaf node with a supplied [`MeasureFunc`]
    */
-  newLeafWithMeasure(layout: Style, measure: any): number {
+  newLeafWithMeasure(layout: Style, measure: any): Node {
     throw new Error("not implemented");
   }
 
@@ -68,7 +66,7 @@ export class Taffy {
    * All associated [`Id`] will be rendered invalid.
    */
   clear() {
-    throw new Error("not implemented");
+    wasm.taffy_clear(this.#ptr);
   }
 
   /**
@@ -178,5 +176,9 @@ export class Taffy {
    */
   computeLayout(node: Node, availableSpace: number): void {
     throw new Error("not implemented");
+  }
+
+  get ptr() {
+    return this.#ptr;
   }
 }

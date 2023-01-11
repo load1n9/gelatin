@@ -1,14 +1,42 @@
 use taffy::prelude::*;
-use wasm_bindgen::prelude::wasm_bindgen;
+use wasm_bindgen::{prelude::wasm_bindgen, __rt::WasmRefCell};
 
 #[wasm_bindgen]
-pub fn taffy_new() -> i32 {
-    let mut _taffy = Taffy::new();
-    return 1;
+pub fn style_default() -> u32 {
+    let style = Style::default();
+    Box::into_raw(Box::new(WasmRefCell::new(style))) as u32
 }
 
 #[wasm_bindgen]
-pub fn taffy_with_capacity(capacity: usize) -> i32 {
-    let mut _taffy = Taffy::with_capacity(capacity);
-    return 1;
+pub fn taffy_new() -> u32 {
+    let taffy = Taffy::new();
+    Box::into_raw(Box::new(WasmRefCell::new(taffy))) as u32
+}
+
+#[wasm_bindgen]
+pub fn taffy_with_capacity(capacity: usize) -> u32 {
+    let taffy = Taffy::with_capacity(capacity);
+    Box::into_raw(Box::new(WasmRefCell::new(taffy))) as u32
+}
+
+#[wasm_bindgen]
+pub fn taffy_clear(taffy: u32) {
+    let taffy = taffy as *mut WasmRefCell<Taffy>;
+    wasm_bindgen::__rt::assert_not_null(taffy);
+    let taffy = unsafe { &*taffy };
+    taffy.borrow_mut().clear();
+}
+
+#[wasm_bindgen]
+pub fn taffy_new_leaf(taffy: u32, style: u32) -> u32 {
+    let taffy = taffy as *mut WasmRefCell<Taffy>;
+    wasm_bindgen::__rt::assert_not_null(taffy);
+    let taffy = unsafe { &*taffy };
+
+    let style = style as *mut WasmRefCell<Style>;
+    wasm_bindgen::__rt::assert_not_null(style);
+    let style = unsafe { &*style };
+
+    let leaf = taffy.borrow_mut().new_leaf(style.borrow_mut().to_owned());
+    Box::into_raw(Box::new(WasmRefCell::new(leaf))) as u32
 }
