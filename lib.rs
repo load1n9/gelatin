@@ -9,12 +9,31 @@ pub enum _Dimension {
     Undefined,
 }
 
+#[wasm_bindgen]
+pub enum _AlignItems {
+    FlexStart,
+    FlexEnd,
+    Center,
+    Baseline,
+    Stretch,
+}
+
 fn encode_dimension(dim: _Dimension, value: f32) -> Dimension {
     match dim {
         _Dimension::Points => Dimension::Points(value),
         _Dimension::Percent => Dimension::Percent(value),
         _Dimension::Auto => Dimension::Auto,
         _Dimension::Undefined => Dimension::Undefined,
+    }
+}
+
+fn _encode_align_items(align_type: _AlignItems) -> AlignItems {
+    match align_type{
+        _AlignItems::FlexStart => AlignItems::FlexStart,
+        _AlignItems::FlexEnd => AlignItems::FlexEnd,
+        _AlignItems::Center => AlignItems::Center,
+        _AlignItems::Baseline => AlignItems::Baseline,
+        _AlignItems::Stretch => AlignItems::Stretch,
     }
 }
 
