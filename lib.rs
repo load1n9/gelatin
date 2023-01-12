@@ -1,23 +1,41 @@
-use taffy::{prelude::*, geometry};
+use taffy::{prelude::*};
 use wasm_bindgen::{__rt::WasmRefCell, prelude::wasm_bindgen};
-
 
 #[wasm_bindgen]
 pub enum _Dimension {
     Points,
     Percent,
     Auto,
+    Undefined,
 }
 
-#[wasm_bindgen]
-pub fn encode_dimension(dim: _Dimension, value: f32) -> u32 {
-    let out = match dim {
+fn encode_dimension(dim: _Dimension, value: f32) -> Dimension {
+    match dim {
         _Dimension::Points => Dimension::Points(value),
         _Dimension::Percent => Dimension::Percent(value),
         _Dimension::Auto => Dimension::Auto,
-    };
+        _Dimension::Undefined => Dimension::Undefined,
+    }
+}
 
-    return 5 as u32;
+#[wasm_bindgen]
+pub fn encode_rect(
+    left: _Dimension,
+    left_value: f32,
+    right: _Dimension,
+    right_value: f32,
+    top: _Dimension,
+    top_value: f32,
+    bottom: _Dimension,
+    bottom_value: f32,
+) -> u32 {
+    let rect = Rect {
+        left: encode_dimension(left, left_value),
+        right: encode_dimension(right, right_value),
+        top: encode_dimension(top, top_value),
+        bottom: encode_dimension(bottom, bottom_value),
+    };
+    Box::into_raw(Box::new(WasmRefCell::new(rect))) as u32
 }
 
 #[wasm_bindgen]

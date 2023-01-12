@@ -1,8 +1,9 @@
 import {
   assertEquals,
   assertInstanceOf,
+  assertNotEquals,
 } from "https://deno.land/std@0.171.0/testing/asserts.ts";
-import { Layout, load, Style, Taffy } from "../mod.ts";
+import { Dimension, Layout, load, Rect, Style, Taffy } from "../mod.ts";
 
 await load();
 Deno.test("new leaf", () => {
@@ -34,22 +35,31 @@ Deno.test("add child", () => {
   const taffy = new Taffy();
 
   const node = taffy.newLeaf(Style.default());
-  assertEquals!(taffy.childCount(node), 0);
+  assertEquals(taffy.childCount(node), 0);
 
   const child0 = taffy.newLeaf(Style.default());
   taffy.addChild(node, child0);
-  assertEquals!(taffy.childCount(node), 1);
+  assertEquals(taffy.childCount(node), 1);
 
   const child1 = taffy.newLeaf(Style.default());
   taffy.addChild(node, child1);
-  assertEquals!(taffy.childCount(node), 2);
+  assertEquals(taffy.childCount(node), 2);
 });
 
 Deno.test("layout", () => {
   const taffy = new Taffy();
-  
+
   const node = taffy.newLeaf(Style.default());
   const res = taffy.layout(node);
   assertInstanceOf(res, Layout);
 });
 
+Deno.test("rect", () => {
+  const rect = new Rect({
+    left: Dimension.Undefined,
+    right: Dimension.Undefined,
+    top: Dimension.Undefined,
+    bottom: Dimension.Undefined,
+  });
+  assertNotEquals(rect.ptr, 0);
+});

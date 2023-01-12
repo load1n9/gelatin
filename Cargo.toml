@@ -1,6 +1,7 @@
 [package]
 name = "stretched-marshmallow"
 version = "0.1.0"
+description = "taffy compiled to wasm"
 edition = "2021"
 
 [lib]
