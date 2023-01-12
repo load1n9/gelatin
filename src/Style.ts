@@ -1,10 +1,7 @@
-// deno-lint-ignore-file no-empty-interface
 import * as wasm from "./wasm.js";
 import { notLoadedError } from "./utils.ts";
 import { loaded } from "./Taffy.ts";
-
-export interface StyleOptions {
-}
+import { StyleOptions } from "./types.ts";
 
 export class Style {
   #ptr: number;
@@ -16,6 +13,7 @@ export class Style {
       ? wasm.style_default()
       : typeof ptrOrStyle === "number"
       ? ptrOrStyle
+      // TODO: do this
       : 0;
   }
 

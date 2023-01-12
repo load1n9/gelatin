@@ -1,9 +1,9 @@
 // deno-lint-ignore-file no-explicit-any no-unused-vars
-import { Layout } from "./types.ts";
 import { Style } from "./Style.ts";
 import { Node } from "./Node.ts";
 import * as wasm from "./wasm.js";
 import { notLoadedError } from "./utils.ts";
+import { Layout } from "./Layout.ts";
 
 export let loaded = false;
 
@@ -74,7 +74,7 @@ export class Taffy {
    * Its [`Id`] is marked as invalid. Returns the id of the node removed.
    */
   remove(node: Node) {
-    throw new Error("not implemented");
+    return new Node(wasm.taffy_remove(this.#ptr, node.ptr));
   }
 
   /**
@@ -88,7 +88,7 @@ export class Taffy {
    * Adds a `child` [`Node`] under the supplied `parent`
    */
   addChild(parent: Node, child: Node) {
-    throw new Error("not implemented");
+    wasm.taffy_add_child(this.#ptr, parent.ptr, child.ptr);
   }
 
   /**
@@ -103,7 +103,7 @@ export class Taffy {
    * The child is not removed from the tree entirely, it is simply no longer attached to its previous parent.
    */
   removeChild(parent: Node, child: Node): Node {
-    throw new Error("not implemented");
+    return new Node(wasm.taffy_remove_child(this.#ptr, parent.ptr, child.ptr));
   }
 
   /**
@@ -111,7 +111,9 @@ export class Taffy {
    * The child is not removed from the tree entirely, it is simply no longer attached to its previous parent.
    */
   removeChildAtIndex(parent: Node, childIndex: number): Node {
-    throw new Error("not implemented");
+    return new Node(
+      wasm.taffy_remove_child_at_index(this.#ptr, parent.ptr, childIndex),
+    );
   }
 
   /**
@@ -119,14 +121,27 @@ export class Taffy {
    * The child is not removed from the tree entirely, it is simply no longer attached to its previous parent.
    */
   replaceChildAtIndex(parent: Node, childIndex: number, newChild: Node): Node {
-    throw new Error("not implemented");
+    return new Node(
+      wasm.taffy_replace_child_at_index(
+        this.#ptr,
+        parent.ptr,
+        childIndex,
+        newChild.ptr,
+      ),
+    );
   }
 
   /**
    * Returns the child [`Node`] of the parent `node` at the provided `child_index`
    */
   childAtIndex(parent: Node, childIndex: number): Node {
-    throw new Error("not implemented");
+    return new Node(
+      wasm.taffy_child_at_index(
+        this.#ptr,
+        parent.ptr,
+        childIndex,
+      ),
+    );
   }
 
   /**
@@ -147,28 +162,28 @@ export class Taffy {
    * Sets the [`Style`] of the provided `node`
    */
   setStyle(node: Node, style: Style) {
-    throw new Error("not implemented");
+    wasm.taffy_set_style(this.#ptr, node.ptr, style.ptr);
   }
 
   /**
    * Gets the [`Style`] of the provided `node`
    */
   style(node: Node): Style {
-    throw new Error("not implemented");
+    return new Style(wasm.taffy_style(this.#ptr, node.ptr));
   }
 
   /**
    * Return this node layout relative to its parent
    */
   layout(node: Node): Layout {
-    throw new Error("not implemented");
+    return new Layout(wasm.taffy_layout(this.#ptr, node.ptr));
   }
 
   /**
    * Indicates whether the layout of this node (and its children) need to be recomputed
    */
   dirty(node: Node): boolean {
-    throw new Error("not implemented");
+    return wasm.taffy_dirty(this.#ptr, node.ptr);
   }
 
   /**
