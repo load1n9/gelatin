@@ -41,7 +41,7 @@ export class Taffy {
   /**
    * Creates and adds a new unattached leaf node to the tree, and returns the new node
    */
-  newLeaf(layout: Style, measure: any = null): Node {
+  newLeaf(layout: Style, measure: any /**MeasureFunc*/ = null): Node {
     if (measure !== null) return this.newLeafWithMeasure(layout, measure);
     return new Node(wasm.taffy_new_leaf(this.#ptr, layout.ptr));
   }
@@ -50,7 +50,7 @@ export class Taffy {
    * Creates and adds a new unattached leaf node to the tree, and returns the [`NodeId`] of the new node
    * Creates and adds a new leaf node with a supplied [`MeasureFunc`]
    */
-  newLeafWithMeasure(layout: Style, measure: any): Node {
+  newLeafWithMeasure(layout: Style, measure: any /**MeasureFunc*/): Node {
     throw new Error("not implemented");
   }
 
@@ -80,7 +80,7 @@ export class Taffy {
   /**
    * Sets the [`MeasureFunc`] of the associated node
    */
-  setMeasure(node: Node, measure?: any) {
+  setMeasure(node: Node, measure?: any /**MeasureFunc*/) {
     throw new Error("not implemented");
   }
 
@@ -189,7 +189,7 @@ export class Taffy {
   /**
    * Updates the stored layout of the provided `node` and its children
    */
-  computeLayout(node: Node, availableSpace: number): void {
+  computeLayout(node: Node, availableSpace: /**Size<AvailableSpace)*/ any): void {
     throw new Error("not implemented");
   }
 

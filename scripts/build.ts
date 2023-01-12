@@ -9,10 +9,18 @@ export async function build() {
     console.log(`the build script should be executed in the "${name}" root`);
     Deno.exit(1);
   }
-
-  await Deno.run({
-    cmd: ["wasm-pack", "build", "--target", "web", "--release"],
-  }).status();
+  const command = new Deno.Command("wasm-pack", {
+    args: [
+      "build",
+      "--target",
+      "web",
+      "--release"
+    ],
+    stdin: "piped",
+    stdout: "piped",
+  });
+  const child = command.spawn();
+  const _status = await child.status;
 
   const wasm = await Deno.readFile(`pkg/${name}_bg.wasm`);
   console.log(`read wasm (size: ${wasm.length} bytes)`);

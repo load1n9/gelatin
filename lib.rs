@@ -1,5 +1,24 @@
-use taffy::prelude::*;
+use taffy::{prelude::*, geometry};
 use wasm_bindgen::{__rt::WasmRefCell, prelude::wasm_bindgen};
+
+
+#[wasm_bindgen]
+pub enum _Dimension {
+    Points,
+    Percent,
+    Auto,
+}
+
+#[wasm_bindgen]
+pub fn encode_dimension(dim: _Dimension, value: f32) -> u32 {
+    let out = match dim {
+        _Dimension::Points => Dimension::Points(value),
+        _Dimension::Percent => Dimension::Percent(value),
+        _Dimension::Auto => Dimension::Auto,
+    };
+
+    return 5 as u32;
+}
 
 #[wasm_bindgen]
 pub fn style_default() -> u32 {
