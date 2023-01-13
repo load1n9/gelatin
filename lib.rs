@@ -200,6 +200,13 @@ pub fn encode_size_zero() -> u32 {
 }
 
 #[wasm_bindgen]
+pub fn encode_size_undefined() -> u32 {
+    let size = Size::UNDEFINED;
+    Box::into_raw(Box::new(WasmRefCell::new(size))) as u32
+}
+
+
+#[wasm_bindgen]
 pub fn style_default() -> u32 {
     let style = Style::default();
     Box::into_raw(Box::new(WasmRefCell::new(style))) as u32

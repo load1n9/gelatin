@@ -76,3 +76,8 @@ Deno.test("size zero", () => {
   const size = Size.Zero;
   assertNotEquals(size.ptr, 0);
 });
+
+Deno.test("size undefined", () => {
+  const size = Size.Undefined;
+  assertNotEquals(size.ptr, 0);
+});

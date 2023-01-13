@@ -88,6 +88,13 @@ export class Size {
     }
     return new Size(wasm.encode_size_zero());
   }
+
+  static get Undefined() {
+    if (!loaded) {
+      throw notLoadedError;
+    }
+    return new Size(wasm.encode_size_undefined());
+  }
   get ptr(): number {
     return this.#ptr;
   }
