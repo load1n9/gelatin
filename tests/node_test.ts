@@ -3,7 +3,7 @@ import {
   assertInstanceOf,
   assertNotEquals,
 } from "https://deno.land/std@0.171.0/testing/asserts.ts";
-import { Dimension, Layout, load, Rect, Style, Taffy } from "../mod.ts";
+import { Dimension, Layout, load, Rect, Size, Style, Taffy } from "../mod.ts";
 
 await load();
 Deno.test("new leaf", () => {
@@ -62,4 +62,17 @@ Deno.test("rect", () => {
     bottom: Dimension.Undefined,
   });
   assertNotEquals(rect.ptr, 0);
+});
+
+Deno.test("size", () => {
+  const size = new Size({
+    width: Dimension.Undefined,
+    height: Dimension.Undefined,
+  });
+  assertNotEquals(size.ptr, 0);
+});
+
+Deno.test("size zero", () => {
+  const size = Size.Zero;
+  assertNotEquals(size.ptr, 0);
 });

@@ -1,4 +1,4 @@
-use taffy::{prelude::*};
+use taffy::prelude::*;
 use wasm_bindgen::{__rt::WasmRefCell, prelude::wasm_bindgen};
 
 #[wasm_bindgen]
@@ -17,6 +17,138 @@ pub enum _AlignItems {
     Baseline,
     Stretch,
 }
+#[wasm_bindgen]
+pub enum _AlignSelf {
+    Auto,
+    FlexStart,
+    FlexEnd,
+    Center,
+    Baseline,
+    Stretch,
+}
+
+#[wasm_bindgen]
+pub enum _AlignContent {
+    FlexStart,
+    FlexEnd,
+    Center,
+    Stretch,
+    SpaceBetween,
+    SpaceEvenly,
+    SpaceAround,
+}
+
+#[wasm_bindgen]
+pub enum _Display {
+    Flex,
+    None,
+}
+
+#[wasm_bindgen]
+pub enum _FlexDirection {
+    Row,
+    Column,
+    RowReverse,
+    ColumnReverse,
+}
+
+#[wasm_bindgen]
+pub enum _JustifyContent {
+    FlexStart,
+    FlexEnd,
+    Center,
+    SpaceBetween,
+    SpaceEvenly,
+    SpaceAround,
+}
+
+#[wasm_bindgen]
+pub enum _PositionType {
+    Relative,
+    Absolute,
+}
+
+#[wasm_bindgen]
+pub enum _FlexWrap {
+    NoWrap,
+    Wrap,
+    WrapReverse,
+}
+
+fn _encode_align_items(align_type: _AlignItems) -> AlignItems {
+    match align_type {
+        _AlignItems::FlexStart => AlignItems::FlexStart,
+        _AlignItems::FlexEnd => AlignItems::FlexEnd,
+        _AlignItems::Center => AlignItems::Center,
+        _AlignItems::Baseline => AlignItems::Baseline,
+        _AlignItems::Stretch => AlignItems::Stretch,
+    }
+}
+
+fn _encode_align_self(align_type: _AlignSelf) -> AlignSelf {
+    match align_type {
+        _AlignSelf::Auto => AlignSelf::Auto,
+        _AlignSelf::FlexStart => AlignSelf::FlexStart,
+        _AlignSelf::FlexEnd => AlignSelf::FlexEnd,
+        _AlignSelf::Center => AlignSelf::Center,
+        _AlignSelf::Baseline => AlignSelf::Baseline,
+        _AlignSelf::Stretch => AlignSelf::Stretch,
+    }
+}
+
+fn _encode_align_content(align_type: _AlignContent) -> AlignContent {
+    match align_type {
+        _AlignContent::FlexStart => AlignContent::FlexStart,
+        _AlignContent::FlexEnd => AlignContent::FlexEnd,
+        _AlignContent::Center => AlignContent::Center,
+        _AlignContent::Stretch => AlignContent::Stretch,
+        _AlignContent::SpaceBetween => AlignContent::SpaceBetween,
+        _AlignContent::SpaceEvenly => AlignContent::SpaceEvenly,
+        _AlignContent::SpaceAround => AlignContent::SpaceAround,
+    }
+}
+
+fn _encode_display(display_type: _Display) -> Display {
+    match display_type {
+        _Display::Flex => Display::Flex,
+        _Display::None => Display::None,
+    }
+}
+
+fn _encode_flex_direction(flex_direction: _FlexDirection) -> FlexDirection {
+    match flex_direction {
+        _FlexDirection::Row => FlexDirection::Row,
+        _FlexDirection::Column => FlexDirection::Column,
+        _FlexDirection::RowReverse => FlexDirection::RowReverse,
+        _FlexDirection::ColumnReverse => FlexDirection::ColumnReverse,
+    }
+}
+
+fn _encode_justify_content(justify_content: _JustifyContent) -> JustifyContent {
+    match justify_content {
+        _JustifyContent::FlexStart => JustifyContent::FlexStart,
+        _JustifyContent::FlexEnd => JustifyContent::FlexEnd,
+        _JustifyContent::Center => JustifyContent::Center,
+        _JustifyContent::SpaceBetween => JustifyContent::SpaceBetween,
+        _JustifyContent::SpaceEvenly => JustifyContent::SpaceEvenly,
+        _JustifyContent::SpaceAround => JustifyContent::SpaceAround,
+    }
+}
+
+fn _encode_position_type(position_type: _PositionType) -> PositionType {
+    match position_type {
+        _PositionType::Relative => PositionType::Relative,
+        _PositionType::Absolute => PositionType::Absolute,
+    }
+}
+
+fn _encode_flex_wrap(flex_wrap: _FlexWrap) -> FlexWrap {
+    match flex_wrap {
+        _FlexWrap::NoWrap => FlexWrap::NoWrap,
+        _FlexWrap::Wrap => FlexWrap::Wrap,
+        _FlexWrap::WrapReverse => FlexWrap::WrapReverse,
+    }
+}
 
 fn encode_dimension(dim: _Dimension, value: f32) -> Dimension {
     match dim {
@@ -24,16 +156,6 @@ fn encode_dimension(dim: _Dimension, value: f32) -> Dimension {
         _Dimension::Percent => Dimension::Percent(value),
         _Dimension::Auto => Dimension::Auto,
         _Dimension::Undefined => Dimension::Undefined,
-    }
-}
-
-fn _encode_align_items(align_type: _AlignItems) -> AlignItems {
-    match align_type{
-        _AlignItems::FlexStart => AlignItems::FlexStart,
-        _AlignItems::FlexEnd => AlignItems::FlexEnd,
-        _AlignItems::Center => AlignItems::Center,
-        _AlignItems::Baseline => AlignItems::Baseline,
-        _AlignItems::Stretch => AlignItems::Stretch,
     }
 }
 
@@ -55,6 +177,26 @@ pub fn encode_rect(
         bottom: encode_dimension(bottom, bottom_value),
     };
     Box::into_raw(Box::new(WasmRefCell::new(rect))) as u32
+}
+
+#[wasm_bindgen]
+pub fn encode_size(
+    width: _Dimension,
+    width_value: f32,
+    height: _Dimension,
+    height_value: f32,
+) -> u32 {
+    let size = Size {
+        width: encode_dimension(width, width_value),
+        height: encode_dimension(height, height_value),
+    };
+    Box::into_raw(Box::new(WasmRefCell::new(size))) as u32
+}
+
+#[wasm_bindgen]
+pub fn encode_size_zero() -> u32 {
+    let size = Size::ZERO;
+    Box::into_raw(Box::new(WasmRefCell::new(size))) as u32
 }
 
 #[wasm_bindgen]
