@@ -180,6 +180,12 @@ pub fn encode_rect(
 }
 
 #[wasm_bindgen]
+pub fn encode_rect_undefined() -> u32 {
+    let size = Rect::UNDEFINED;
+    Box::into_raw(Box::new(WasmRefCell::new(size))) as u32
+}
+
+#[wasm_bindgen]
 pub fn encode_size(
     width: _Dimension,
     width_value: f32,
@@ -200,17 +206,31 @@ pub fn encode_size_zero() -> u32 {
 }
 
 #[wasm_bindgen]
+pub fn encode_size_auto() -> u32 {
+    let size = Size::AUTO;
+    Box::into_raw(Box::new(WasmRefCell::new(size))) as u32
+}
+
+#[wasm_bindgen]
 pub fn encode_size_undefined() -> u32 {
     let size = Size::UNDEFINED;
     Box::into_raw(Box::new(WasmRefCell::new(size))) as u32
 }
-
 
 #[wasm_bindgen]
 pub fn style_default() -> u32 {
     let style = Style::default();
     Box::into_raw(Box::new(WasmRefCell::new(style))) as u32
 }
+
+// #[wasm_bindgen]
+// pub fn encode_style(display: _Display) -> u32 {
+//     let style = Style {
+//         display: _encode_display(display),
+//     };
+
+//     Box::into_raw(Box::new(WasmRefCell::new(style))) as u32
+// }
 
 #[wasm_bindgen]
 pub fn taffy_new() -> u32 {

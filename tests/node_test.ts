@@ -64,6 +64,10 @@ Deno.test("rect", () => {
   assertNotEquals(rect.ptr, 0);
 });
 
+Deno.test("rect undefined", () => {
+  const rect = Rect.Undefined;
+  assertNotEquals(rect.ptr, 0);
+});
 Deno.test("size", () => {
   const size = new Size({
     width: Dimension.Undefined,
@@ -79,5 +83,10 @@ Deno.test("size zero", () => {
 
 Deno.test("size undefined", () => {
   const size = Size.Undefined;
+  assertNotEquals(size.ptr, 0);
+});
+
+Deno.test("size auto", () => {
+  const size = Size.Auto;
   assertNotEquals(size.ptr, 0);
 });

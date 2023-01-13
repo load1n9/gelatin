@@ -57,6 +57,13 @@ export class Rect {
       );
   }
 
+  static get Undefined() {
+    if (!loaded) {
+      throw notLoadedError;
+    }
+    return new Rect(wasm.encode_rect_undefined());
+  }
+
   get ptr(): number {
     return this.#ptr;
   }
@@ -95,6 +102,14 @@ export class Size {
     }
     return new Size(wasm.encode_size_undefined());
   }
+
+  static get Auto() {
+    if (!loaded) {
+      throw notLoadedError;
+    }
+    return new Size(wasm.encode_size_auto());
+  }
+  
   get ptr(): number {
     return this.#ptr;
   }
