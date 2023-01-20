@@ -1,4 +1,4 @@
-/target
-/pkg
+target
+pkg
 Cargo.lock
 deno.lock
