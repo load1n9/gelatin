@@ -7,6 +7,7 @@ use std::rc::Rc;
 
 use js_sys::Function;
 use js_sys::Reflect;
+use taffy::tree::LayoutTree;
 use wasm_bindgen::prelude::*;
 
 #[cfg(feature = "wee_alloc")]
@@ -19,19 +20,23 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 pub enum AlignItems {
     FlexStart,
     FlexEnd,
+    Start,
+    End,
     Center,
     Baseline,
     Stretch,
 }
 
-impl Into<stretch::style::AlignItems> for AlignItems {
-    fn into(self) -> stretch::style::AlignItems {
+impl Into<taffy::style::AlignItems> for AlignItems {
+    fn into(self) -> taffy::style::AlignItems {
         match self {
-            AlignItems::FlexStart => stretch::style::AlignItems::FlexStart,
-            AlignItems::FlexEnd => stretch::style::AlignItems::FlexEnd,
-            AlignItems::Center => stretch::style::AlignItems::Center,
-            AlignItems::Baseline => stretch::style::AlignItems::Baseline,
-            AlignItems::Stretch => stretch::style::AlignItems::Stretch,
+            AlignItems::FlexStart => taffy::style::AlignItems::FlexStart,
+            AlignItems::FlexEnd => taffy::style::AlignItems::FlexEnd,
+            AlignItems::Start => taffy::style::AlignItems::Start,
+            AlignItems::End => taffy::style::AlignItems::End,
+            AlignItems::Center => taffy::style::AlignItems::Center,
+            AlignItems::Baseline => taffy::style::AlignItems::Baseline,
+            AlignItems::Stretch => taffy::style::AlignItems::Stretch,
         }
     }
 }
@@ -41,9 +46,11 @@ impl From<i32> for AlignItems {
         match n {
             0 => AlignItems::FlexStart,
             1 => AlignItems::FlexEnd,
-            2 => AlignItems::Center,
-            3 => AlignItems::Baseline,
-            4 => AlignItems::Stretch,
+            2 => AlignItems::Start,
+            3 => AlignItems::End,
+            4 => AlignItems::Center,
+            5 => AlignItems::Baseline,
+            6 => AlignItems::Stretch,
             _ => AlignItems::Stretch,
         }
     }
@@ -53,23 +60,25 @@ impl From<i32> for AlignItems {
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AlignSelf {
-    Auto,
     FlexStart,
     FlexEnd,
+    Start,
+    End,
     Center,
     Baseline,
     Stretch,
 }
 
-impl Into<stretch::style::AlignSelf> for AlignSelf {
-    fn into(self) -> stretch::style::AlignSelf {
+impl Into<taffy::style::AlignSelf> for AlignSelf {
+    fn into(self) -> taffy::style::AlignSelf {
         match self {
-            AlignSelf::Auto => stretch::style::AlignSelf::Auto,
-            AlignSelf::FlexStart => stretch::style::AlignSelf::FlexStart,
-            AlignSelf::FlexEnd => stretch::style::AlignSelf::FlexEnd,
-            AlignSelf::Center => stretch::style::AlignSelf::Center,
-            AlignSelf::Baseline => stretch::style::AlignSelf::Baseline,
-            AlignSelf::Stretch => stretch::style::AlignSelf::Stretch,
+            AlignSelf::FlexStart => taffy::style::AlignSelf::FlexStart,
+            AlignSelf::FlexEnd => taffy::style::AlignSelf::FlexEnd,
+            AlignSelf::Start => taffy::style::AlignSelf::Start,
+            AlignSelf::End => taffy::style::AlignSelf::End,
+            AlignSelf::Center => taffy::style::AlignSelf::Center,
+            AlignSelf::Baseline => taffy::style::AlignSelf::Baseline,
+            AlignSelf::Stretch => taffy::style::AlignSelf::Stretch,
         }
     }
 }
@@ -77,13 +86,14 @@ impl Into<stretch::style::AlignSelf> for AlignSelf {
 impl From<i32> for AlignSelf {
     fn from(n: i32) -> Self {
         match n {
-            0 => AlignSelf::Auto,
-            1 => AlignSelf::FlexStart,
-            2 => AlignSelf::FlexEnd,
-            3 => AlignSelf::Center,
-            4 => AlignSelf::Baseline,
-            5 => AlignSelf::Stretch,
-            _ => AlignSelf::Auto,
+            0 => AlignSelf::FlexStart,
+            1 => AlignSelf::FlexEnd,
+            2 => AlignSelf::Start,
+            3 => AlignSelf::End,
+            4 => AlignSelf::Center,
+            5 => AlignSelf::Baseline,
+            6 => AlignSelf::Stretch,
+            _ => AlignSelf::Start,
         }
     }
 }
@@ -94,21 +104,25 @@ impl From<i32> for AlignSelf {
 pub enum AlignContent {
     FlexStart,
     FlexEnd,
+    Start,
+    End,
     Center,
     Stretch,
     SpaceBetween,
     SpaceAround,
 }
 
-impl Into<stretch::style::AlignContent> for AlignContent {
-    fn into(self) -> stretch::style::AlignContent {
+impl Into<taffy::style::AlignContent> for AlignContent {
+    fn into(self) -> taffy::style::AlignContent {
         match self {
-            AlignContent::FlexStart => stretch::style::AlignContent::FlexStart,
-            AlignContent::FlexEnd => stretch::style::AlignContent::FlexEnd,
-            AlignContent::Center => stretch::style::AlignContent::Center,
-            AlignContent::Stretch => stretch::style::AlignContent::Stretch,
-            AlignContent::SpaceBetween => stretch::style::AlignContent::SpaceBetween,
-            AlignContent::SpaceAround => stretch::style::AlignContent::SpaceAround,
+            AlignContent::FlexStart => taffy::style::AlignContent::FlexStart,
+            AlignContent::FlexEnd => taffy::style::AlignContent::FlexEnd,
+            AlignContent::Start => taffy::style::AlignContent::FlexStart,
+            AlignContent::End => taffy::style::AlignContent::FlexEnd,
+            AlignContent::Center => taffy::style::AlignContent::Center,
+            AlignContent::Stretch => taffy::style::AlignContent::Stretch,
+            AlignContent::SpaceBetween => taffy::style::AlignContent::SpaceBetween,
+            AlignContent::SpaceAround => taffy::style::AlignContent::SpaceAround,
         }
     }
 }
@@ -118,41 +132,13 @@ impl From<i32> for AlignContent {
         match n {
             0 => AlignContent::FlexStart,
             1 => AlignContent::FlexEnd,
-            2 => AlignContent::Center,
-            3 => AlignContent::Stretch,
-            4 => AlignContent::SpaceBetween,
-            5 => AlignContent::SpaceAround,
+            2 => AlignContent::Start,
+            3 => AlignContent::End,
+            4 => AlignContent::Center,
+            5 => AlignContent::Stretch,
+            6 => AlignContent::SpaceBetween,
+            7 => AlignContent::SpaceAround,
             _ => AlignContent::Stretch,
-        }
-    }
-}
-
-#[wasm_bindgen]
-#[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum Direction {
-    Inherit,
-    LTR,
-    RTL,
-}
-
-impl Into<stretch::style::Direction> for Direction {
-    fn into(self) -> stretch::style::Direction {
-        match self {
-            Direction::Inherit => stretch::style::Direction::Inherit,
-            Direction::LTR => stretch::style::Direction::LTR,
-            Direction::RTL => stretch::style::Direction::RTL,
-        }
-    }
-}
-
-impl From<i32> for Direction {
-    fn from(n: i32) -> Self {
-        match n {
-            0 => Direction::Inherit,
-            1 => Direction::LTR,
-            2 => Direction::RTL,
-            _ => Direction::Inherit,
         }
     }
 }
@@ -165,11 +151,11 @@ pub enum Display {
     None,
 }
 
-impl Into<stretch::style::Display> for Display {
-    fn into(self) -> stretch::style::Display {
+impl Into<taffy::style::Display> for Display {
+    fn into(self) -> taffy::style::Display {
         match self {
-            Display::Flex => stretch::style::Display::Flex,
-            Display::None => stretch::style::Display::None,
+            Display::Flex => taffy::style::Display::Flex,
+            Display::None => taffy::style::Display::None,
         }
     }
 }
@@ -194,13 +180,13 @@ pub enum FlexDirection {
     ColumnReverse,
 }
 
-impl Into<stretch::style::FlexDirection> for FlexDirection {
-    fn into(self) -> stretch::style::FlexDirection {
+impl Into<taffy::style::FlexDirection> for FlexDirection {
+    fn into(self) -> taffy::style::FlexDirection {
         match self {
-            FlexDirection::Row => stretch::style::FlexDirection::Row,
-            FlexDirection::Column => stretch::style::FlexDirection::Column,
-            FlexDirection::RowReverse => stretch::style::FlexDirection::RowReverse,
-            FlexDirection::ColumnReverse => stretch::style::FlexDirection::ColumnReverse,
+            FlexDirection::Row => taffy::style::FlexDirection::Row,
+            FlexDirection::Column => taffy::style::FlexDirection::Column,
+            FlexDirection::RowReverse => taffy::style::FlexDirection::RowReverse,
+            FlexDirection::ColumnReverse => taffy::style::FlexDirection::ColumnReverse,
         }
     }
 }
@@ -223,21 +209,25 @@ impl From<i32> for FlexDirection {
 pub enum JustifyContent {
     FlexStart,
     FlexEnd,
+    Start,
+    End,
     Center,
     SpaceBetween,
     SpaceAround,
     SpaceEvenly,
 }
 
-impl Into<stretch::style::JustifyContent> for JustifyContent {
-    fn into(self) -> stretch::style::JustifyContent {
+impl Into<taffy::style::JustifyContent> for JustifyContent {
+    fn into(self) -> taffy::style::JustifyContent {
         match self {
-            JustifyContent::FlexStart => stretch::style::JustifyContent::FlexStart,
-            JustifyContent::FlexEnd => stretch::style::JustifyContent::FlexEnd,
-            JustifyContent::Center => stretch::style::JustifyContent::Center,
-            JustifyContent::SpaceBetween => stretch::style::JustifyContent::SpaceBetween,
-            JustifyContent::SpaceAround => stretch::style::JustifyContent::SpaceAround,
-            JustifyContent::SpaceEvenly => stretch::style::JustifyContent::SpaceEvenly,
+            JustifyContent::FlexStart => taffy::style::JustifyContent::FlexStart,
+            JustifyContent::FlexEnd => taffy::style::JustifyContent::FlexEnd,
+            JustifyContent::Start => taffy::style::JustifyContent::Start,
+            JustifyContent::End => taffy::style::JustifyContent::End,
+            JustifyContent::Center => taffy::style::JustifyContent::Center,
+            JustifyContent::SpaceBetween => taffy::style::JustifyContent::SpaceBetween,
+            JustifyContent::SpaceAround => taffy::style::JustifyContent::SpaceAround,
+            JustifyContent::SpaceEvenly => taffy::style::JustifyContent::SpaceEvenly,
         }
     }
 }
@@ -247,10 +237,12 @@ impl From<i32> for JustifyContent {
         match n {
             0 => JustifyContent::FlexStart,
             1 => JustifyContent::FlexEnd,
-            2 => JustifyContent::Center,
-            3 => JustifyContent::SpaceBetween,
-            4 => JustifyContent::SpaceAround,
-            5 => JustifyContent::SpaceEvenly,
+            2 => JustifyContent::Start,
+            3 => JustifyContent::End,
+            4 => JustifyContent::Center,
+            5 => JustifyContent::SpaceBetween,
+            6 => JustifyContent::SpaceAround,
+            7 => JustifyContent::SpaceEvenly,
             _ => JustifyContent::FlexStart,
         }
     }
@@ -259,56 +251,26 @@ impl From<i32> for JustifyContent {
 #[wasm_bindgen]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum Overflow {
-    Visible,
-    Hidden,
-    Scroll,
-}
-
-impl Into<stretch::style::Overflow> for Overflow {
-    fn into(self) -> stretch::style::Overflow {
-        match self {
-            Overflow::Visible => stretch::style::Overflow::Visible,
-            Overflow::Hidden => stretch::style::Overflow::Hidden,
-            Overflow::Scroll => stretch::style::Overflow::Scroll,
-        }
-    }
-}
-
-impl From<i32> for Overflow {
-    fn from(n: i32) -> Self {
-        match n {
-            0 => Overflow::Visible,
-            1 => Overflow::Hidden,
-            2 => Overflow::Scroll,
-            _ => Overflow::Visible,
-        }
-    }
-}
-
-#[wasm_bindgen]
-#[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum PositionType {
+pub enum Position {
     Relative,
     Absolute,
 }
 
-impl Into<stretch::style::PositionType> for PositionType {
-    fn into(self) -> stretch::style::PositionType {
+impl Into<taffy::style::Position> for Position {
+    fn into(self) -> taffy::style::Position {
         match self {
-            PositionType::Relative => stretch::style::PositionType::Relative,
-            PositionType::Absolute => stretch::style::PositionType::Absolute,
+            Position::Relative => taffy::style::Position::Relative,
+            Position::Absolute => taffy::style::Position::Absolute,
         }
     }
 }
 
-impl From<i32> for PositionType {
+impl From<i32> for Position {
     fn from(n: i32) -> Self {
         match n {
-            0 => PositionType::Relative,
-            1 => PositionType::Absolute,
-            _ => PositionType::Relative,
+            0 => Position::Relative,
+            1 => Position::Absolute,
+            _ => Position::Relative,
         }
     }
 }
@@ -322,12 +284,12 @@ pub enum FlexWrap {
     WrapReverse,
 }
 
-impl Into<stretch::style::FlexWrap> for FlexWrap {
-    fn into(self) -> stretch::style::FlexWrap {
+impl Into<taffy::style::FlexWrap> for FlexWrap {
+    fn into(self) -> taffy::style::FlexWrap {
         match self {
-            FlexWrap::NoWrap => stretch::style::FlexWrap::NoWrap,
-            FlexWrap::Wrap => stretch::style::FlexWrap::Wrap,
-            FlexWrap::WrapReverse => stretch::style::FlexWrap::WrapReverse,
+            FlexWrap::NoWrap => taffy::style::FlexWrap::NoWrap,
+            FlexWrap::Wrap => taffy::style::FlexWrap::Wrap,
+            FlexWrap::WrapReverse => taffy::style::FlexWrap::WrapReverse,
         }
     }
 }
@@ -366,10 +328,10 @@ pub struct Layout {
 
 #[wasm_bindgen]
 impl Layout {
-    fn new(allocator: &Allocator, node: stretch::node::Node) -> Layout {
-        let stretch = allocator.stretch.borrow();
-        let layout = stretch.layout(node).unwrap();
-        let children = stretch.children(node).unwrap();
+    fn new(allocator: &Allocator, node: taffy::node::Node) -> Layout {
+        let taffy = allocator.stretch.borrow();
+        let layout = taffy.layout(node).unwrap();
+        let children = taffy.children(node).unwrap();
 
         Layout {
             width: layout.size.width,
@@ -393,7 +355,7 @@ impl Layout {
 #[wasm_bindgen]
 #[derive(Clone)]
 pub struct Allocator {
-    stretch: Rc<RefCell<stretch::node::Stretch>>,
+    stretch: Rc<RefCell<taffy::Taffy>>,
 }
 
 #[wasm_bindgen]
@@ -401,7 +363,7 @@ impl Allocator {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
         Self {
-            stretch: Rc::new(RefCell::new(stretch::node::Stretch::new())),
+            stretch: Rc::new(RefCell::new(taffy::Taffy::new())),
         }
     }
 }
@@ -409,7 +371,7 @@ impl Allocator {
 #[wasm_bindgen]
 pub struct Node {
     allocator: Allocator,
-    node: stretch::node::Node,
+    node: taffy::node::Node,
     style: JsValue,
 
     #[wasm_bindgen(readonly)]
@@ -425,7 +387,7 @@ impl Node {
             node: allocator
                 .stretch
                 .borrow_mut()
-                .new_node(parse_style(&style), Vec::new())
+                .new_with_children(parse_style(&style), &Vec::new())
                 .unwrap(),
             style: style.clone(),
             childCount: 0,
@@ -556,9 +518,9 @@ impl Node {
             .borrow_mut()
             .compute_layout(
                 self.node,
-                stretch::geometry::Size {
+                taffy::geometry::Size {
                     width: if let Some(val) = get_f32(size, "width") {
-                        stretch::number::Number::Defined(val)
+                        taffy::number::Number::Defined(val)
                     } else {
                         stretch::number::Number::Undefined
                     },
@@ -574,16 +536,13 @@ impl Node {
     }
 }
 
-fn parse_style(style: &JsValue) -> stretch::style::Style {
-    stretch::style::Style {
+fn parse_style(style: &JsValue) -> taffy::style::Style {
+    taffy::style::Style {
         display: get_i32(style, "display")
             .map(|i| Display::from(i).into())
             .unwrap_or_default(),
-        position_type: get_i32(style, "positionType")
-            .map(|i| PositionType::from(i).into())
-            .unwrap_or_default(),
-        direction: get_i32(style, "direction")
-            .map(|i| Direction::from(i).into())
+        position: get_i32(style, "position")
+            .map(|i| Position::from(i).into())
             .unwrap_or_default(),
         flex_direction: get_i32(style, "flexDirection")
             .map(|i| FlexDirection::from(i).into())
@@ -591,46 +550,43 @@ fn parse_style(style: &JsValue) -> stretch::style::Style {
         flex_wrap: get_i32(style, "flexWrap")
             .map(|i| FlexWrap::from(i).into())
             .unwrap_or_default(),
-        overflow: get_i32(style, "overflow")
-            .map(|i| Overflow::from(i).into())
-            .unwrap_or_default(),
         align_items: get_i32(style, "alignItems")
-            .map(|i| AlignItems::from(i).into())
+            .map(|i| Some(AlignItems::from(i).into()))
             .unwrap_or_default(),
         align_self: get_i32(style, "alignSelf")
-            .map(|i| AlignSelf::from(i).into())
+            .map(|i| Some(AlignSelf::from(i).into()))
             .unwrap_or_default(),
         align_content: get_i32(style, "alignContent")
-            .map(|i| AlignContent::from(i).into())
+            .map(|i| Some(AlignContent::from(i).into()))
             .unwrap_or_default(),
         justify_content: get_i32(style, "justifyContent")
-            .map(|i| JustifyContent::from(i).into())
+            .map(|i| Some(JustifyContent::from(i).into()))
             .unwrap_or_default(),
 
-        position: stretch::geometry::Rect {
-            start: get_dimension(style, "start"),
-            end: get_dimension(style, "end"),
-            top: get_dimension(style, "top"),
-            bottom: get_dimension(style, "bottom"),
-        },
+        // position: taffy::geometry::Rect {
+        //     start: get_dimension(style, "start"),
+        //     end: get_dimension(style, "end"),
+        //     top: get_dimension(style, "top"),
+        //     bottom: get_dimension(style, "bottom"),
+        // },
 
-        margin: stretch::geometry::Rect {
-            start: get_dimension(style, "marginStart"),
-            end: get_dimension(style, "marginEnd"),
+        margin: taffy::geometry::Rect {
+            left: get_dimension(style, "marginStart"),
+            right: get_dimension(style, "marginEnd"),
             top: get_dimension(style, "marginTop"),
             bottom: get_dimension(style, "marginBottom"),
         },
 
-        padding: stretch::geometry::Rect {
-            start: get_dimension(style, "paddingStart"),
-            end: get_dimension(style, "paddingEnd"),
+        padding: taffy::geometry::Rect {
+            left: get_dimension(style, "paddingStart"),
+            right: get_dimension(style, "paddingEnd"),
             top: get_dimension(style, "paddingTop"),
             bottom: get_dimension(style, "paddingBottom"),
         },
 
-        border: stretch::geometry::Rect {
-            start: get_dimension(style, "borderStart"),
-            end: get_dimension(style, "borderEnd"),
+        border: taffy::geometry::Rect {
+            left: get_dimension(style, "borderStart"),
+            right: get_dimension(style, "borderEnd"),
             top: get_dimension(style, "borderTop"),
             bottom: get_dimension(style, "borderBottom"),
         },
@@ -639,31 +595,29 @@ fn parse_style(style: &JsValue) -> stretch::style::Style {
         flex_shrink: get_f32(style, "flexShrink").unwrap_or(1.0),
         flex_basis: get_dimension(style, "flexBasis"),
 
-        size: stretch::geometry::Size {
+        size: taffy::geometry::Size {
             width: get_size_dimension(style, "width"),
             height: get_size_dimension(style, "height"),
         },
 
-        min_size: stretch::geometry::Size {
+        min_size: taffy::geometry::Size {
             width: get_size_dimension(style, "minWidth"),
             height: get_size_dimension(style, "minHeight"),
         },
 
-        max_size: stretch::geometry::Size {
+        max_size: taffy::geometry::Size {
             width: get_size_dimension(style, "maxWidth"),
             height: get_size_dimension(style, "maxHeight"),
         },
 
         aspect_ratio: get_f32(style, "aspectRatio")
-            .map(stretch::number::Number::Defined)
-            .unwrap_or(stretch::number::Number::Undefined),
     }
 }
 
-fn get_size_dimension(obj: &JsValue, key: &str) -> stretch::style::Dimension {
+fn get_size_dimension(obj: &JsValue, key: &str) -> taffy::style::Dimension {
     let dimension = get_dimension(obj, key);
     match dimension {
-        stretch::style::Dimension::Undefined => stretch::style::Dimension::Auto,
+        taffy::style::Dimension::Auto => taffy::style::Dimension::Auto,
         _ => dimension,
     }
 }
