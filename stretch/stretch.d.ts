@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-/** */
+
 export enum AlignItems {
   FlexStart,
   FlexEnd,
@@ -7,7 +7,7 @@ export enum AlignItems {
   Baseline,
   Stretch,
 }
-/** */
+
 export enum AlignSelf {
   Auto,
   FlexStart,
@@ -16,7 +16,7 @@ export enum AlignSelf {
   Baseline,
   Stretch,
 }
-/** */
+
 export enum AlignContent {
   FlexStart,
   FlexEnd,
@@ -25,25 +25,25 @@ export enum AlignContent {
   SpaceBetween,
   SpaceAround,
 }
-/** */
+
 export enum Direction {
   Inherit,
   LTR,
   RTL,
 }
-/** */
+
 export enum Display {
   Flex,
   None,
 }
-/** */
+
 export enum FlexDirection {
   Row,
   Column,
   RowReverse,
   ColumnReverse,
 }
-/** */
+
 export enum JustifyContent {
   FlexStart,
   FlexEnd,
@@ -52,30 +52,67 @@ export enum JustifyContent {
   SpaceAround,
   SpaceEvenly,
 }
-/** */
+
 export enum Overflow {
   Visible,
   Hidden,
   Scroll,
 }
-/** */
+
 export enum PositionType {
   Relative,
   Absolute,
 }
-/** */
+
 export enum FlexWrap {
   NoWrap,
   Wrap,
   WrapReverse,
 }
-/** */
 export class Allocator {
   free(): void;
-  /** */
   constructor();
 }
-/** */
+
+export interface Styles {
+  display: Display;
+  positionType: PositionType;
+  direction: Direction;
+  flexDirection: FlexDirection;
+  flexWrap: FlexWrap;
+  overflow: Overflow;
+  alignItems: AlignItems;
+  alignSelf: AlignSelf;
+  alignContent: AlignContent;
+  justifyContent: JustifyContent;
+  start: string | number;
+  end: string | number;
+  top: string | number;
+  bottom: string | number;
+  marginStart: string | number;
+  marginEnd: string | number;
+  marginTop: string | number;
+  marginBottom: string | number;
+  paddingStart: string | number;
+  paddingEnd: string | number;
+  paddingTop: string | number;
+  paddingBottom: string | number;
+  borderStart: string | number;
+  borderEnd: string | number;
+  borderTop: string | number;
+  borderBottom: string | number;
+  flexGrow: number;
+  flexShrink: number;
+  flexBasis: string | number;
+  width: string | number;
+  height: string | number;
+  minWidth: string | number;
+  minHeight: string | number;
+  maxWidth: string | number;
+  maxHeight: string | number;
+  aspectRatio: number;
+}
+
 export class Layout {
   free(): void;
   /**
@@ -94,14 +131,14 @@ export class Layout {
   /** */
   readonly y: number;
 }
-/** */
+
 export class Node {
   free(): void;
   /**
    * @param {Allocator} allocator
    * @param {any} style
    */
-  constructor(allocator: Allocator, style: any);
+  constructor(allocator: Allocator, style: Partial<Styles>);
   /**
    * @param {any} measure
    */
@@ -124,13 +161,13 @@ export class Node {
    */
   removeChildAtIndex(index: number): void;
   /**
-   * @returns {any}
+   * @returns {Partial<Styles>}
    */
-  getStyle(): any;
+  getStyle(): Partial<Styles>;
   /**
-   * @param {any} style
+   * @param {Partial<Styles>} style
    */
-  setStyle(style: any): void;
+  setStyle(style: Partial<Styles>): void;
   /** */
   markDirty(): void;
   /**
