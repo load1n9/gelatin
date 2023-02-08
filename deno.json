@@ -1,7 +1,6 @@
 {
-    "tasks": {
-        "build-taffy": "cd taffy && deno run -A --unstable scripts/build.ts stretched_marshmallow && cd ..",
-        "build-stretch": "cd stretch && deno run -A --unstable scripts/build.ts stretch_layout && cd ..",
-        "test": "deno run -A --unstable examples/simple.ts"
-    }
+  "tasks": {
+    "build-stretch": "deno run -A --unstable scripts/build.ts stretch_layout",
+    "example_canvas": "deno run -A --unstable examples/canvas.ts"
+  }
 }

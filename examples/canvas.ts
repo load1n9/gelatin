@@ -2,10 +2,10 @@ import { Allocator, JustifyContent, load, Node, PositionType } from "../mod.ts";
 import {
   mainloop,
   WindowCanvas,
-} from "https://raw.githubusercontent.com/deno-windowing/dwm/main/ext/canvas.ts";
+} from "https://deno.land/x/dwm@0.3.0/ext/canvas.ts";
 
 const win = new WindowCanvas({
-  title: "Avocado",
+  title: "Stretch",
   width: 500,
   height: 500,
   resizable: true,
