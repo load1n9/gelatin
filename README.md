@@ -1,7 +1,7 @@
 # Gelatin
 
 [![Tags](https://img.shields.io/github/release/load1n9/gelatin)](https://github.com/load1n9/gelatin/releases)
-[![Doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/gluten/mod.ts)
+[![Doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/gelatin/mod.ts)
 [![License](https://img.shields.io/github/license/load1n9/gelatin)](https://github.com/load1n9/gelatin/blob/main/LICENSE)
 [![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/load1n9)
 
