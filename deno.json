@@ -1,6 +1,7 @@
 {
   "tasks": {
-    "build-stretch": "deno run -A --unstable scripts/build.ts stretch_layout",
+    "build": "deno run -A --unstable scripts/build.ts gelatin",
     "example_canvas": "deno run -A --unstable examples/canvas.ts"
-  }
+  },
+  "importMap": "./import_map.json"
 }

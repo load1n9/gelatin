@@ -1,10 +1,4 @@
-import {
-  Allocator,
-  JustifyContent,
-  load,
-  Node,
-  PositionType,
-} from "../mod.ts";
+import { Allocator, JustifyContent, load, Node, Position } from "../mod.ts";
 
 import { assertEquals } from "https://deno.land/std@0.171.0/testing/asserts.ts";
 
@@ -14,7 +8,7 @@ const allocator = new Allocator();
 
 Deno.test("25% width", () => {
   const node = new Node(allocator, {
-    positionType: PositionType.Absolute,
+    position: Position.Absolute,
     width: 100,
     height: 100,
     justifyContent: JustifyContent.Center,
@@ -26,7 +20,7 @@ Deno.test("25% width", () => {
 
 Deno.test("100% width", () => {
   const node = new Node(allocator, {
-    positionType: PositionType.Absolute,
+    position: Position.Absolute,
     width: 100,
     height: 100,
     justifyContent: JustifyContent.Center,

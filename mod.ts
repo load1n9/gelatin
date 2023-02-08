@@ -1,4 +1,4 @@
-// @deno-types="./stretch.d.ts"
+// @deno-types="./gelatin.d.ts"
 
 import * as wasm from "./src/wasm.js";
 

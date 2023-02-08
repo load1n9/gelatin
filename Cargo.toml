@@ -1,5 +1,5 @@
 [package]
-name = "stretch-layout"
+name = "gelatin"
 version = "0.1.0"
 edition = "2018"
 
@@ -10,11 +10,10 @@ crate-type = ["cdylib", "rlib"]
 default = ["console_error_panic_hook"]
 
 [dependencies]
-wasm-bindgen = "0.2.83"
+wasm-bindgen = "0.2.84"
 js-sys = "0.3"
-stretch = "0.3.2"
+taffy = { git = "https://github.com/DioxusLabs/taffy" }
 console_error_panic_hook = { version = "0.1.1", optional = true }
-wee_alloc = { version = "0.4.2", optional = true }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.33"

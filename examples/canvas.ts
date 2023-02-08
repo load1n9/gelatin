@@ -1,4 +1,10 @@
-import { Allocator, JustifyContent, load, Node, PositionType } from "../mod.ts";
+import {
+  Allocator,
+  JustifyContent,
+  load,
+  Node,
+  Position,
+} from "https://deno.land/x/gelatin/mod.ts";
 import {
   mainloop,
   WindowCanvas,
@@ -17,7 +23,7 @@ await load();
 const allocator = new Allocator();
 
 const container = new Node(allocator, {
-  positionType: PositionType.Absolute,
+  position: Position.Absolute,
   width: 500,
   height: 500,
   justifyContent: JustifyContent.FlexStart,
@@ -26,7 +32,8 @@ const container = new Node(allocator, {
 // green
 container.addChild(
   new Node(allocator, {
-    width: "25%",
+    marginStart: 0,
+    width: "35%",
     height: "100%",
   }),
 );
