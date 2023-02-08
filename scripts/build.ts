@@ -14,7 +14,7 @@ export async function build() {
       "build",
       "--target",
       "web",
-      "--release"
+      "--release",
     ],
     stdin: "piped",
     stdout: "piped",

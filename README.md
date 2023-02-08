@@ -1,17 +1,23 @@
-# Layout library for Deno
+# Gelatin
 
-layout library for Deno using [stretch](https://github.com/vislyhq/stretch)
-later to be rewritten using taffy
+[![Tags](https://img.shields.io/github/release/deno-windowing/gluten)](https://github.com/deno-windowing/gluten/releases)
+[![Doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/gluten/mod.ts)
+[![License](https://img.shields.io/github/license/deno-windowing/gluten)](https://github.com/deno-windowing/gluten/blob/master/LICENSE)
+[![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/DjDeveloperr)
+
+speedy wasm layout library for Deno using
+[taffy](https://github.com/DioxusLabs/taffy)
 
 ## Usage
 
 ```ts
 import {
   Allocator,
+  Display,
   JustifyContent,
   load,
   Node,
-  PositionType,
+  Position,
 } from "https://deno.land/x/gelatin/mod.ts";
 import {
   mainloop,
@@ -31,7 +37,7 @@ await load();
 const allocator = new Allocator();
 
 const container = new Node(allocator, {
-  positionType: PositionType.Absolute,
+  position: Position.Absolute,
   width: 500,
   height: 500,
   justifyContent: JustifyContent.FlexStart,
@@ -40,7 +46,8 @@ const container = new Node(allocator, {
 // green
 container.addChild(
   new Node(allocator, {
-    width: "25%",
+    marginStart: 0,
+    width: "35%",
     height: "100%",
   }),
 );
@@ -84,3 +91,15 @@ await mainloop(() => {
   win.draw();
 });
 ```
+
+![demo](./assets/demo.png)
+
+## Maintainers
+
+- Dean Srebnik ([@load1n9](https://github.com/load1n9))
+
+## License
+
+[Apache-2.0](./LICENSE) licensed.
+
+Copyright 2023 © Dean Srebnik

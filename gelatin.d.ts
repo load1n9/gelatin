@@ -1,17 +1,38 @@
-// deno-lint-ignore-file no-explicit-any
-
 export enum AlignItems {
   FlexStart,
   FlexEnd,
+  Start,
+  End,
+  Center,
+  Baseline,
+  Stretch,
+}
+
+export enum JustifyItems {
+  FlexStart,
+  FlexEnd,
+  Start,
+  End,
+  Center,
+  Baseline,
+  Stretch,
+}
+
+export enum JustifySelf {
+  FlexStart,
+  FlexEnd,
+  Start,
+  End,
   Center,
   Baseline,
   Stretch,
 }
 
 export enum AlignSelf {
-  Auto,
   FlexStart,
   FlexEnd,
+  Start,
+  End,
   Center,
   Baseline,
   Stretch,
@@ -20,20 +41,17 @@ export enum AlignSelf {
 export enum AlignContent {
   FlexStart,
   FlexEnd,
+  Start,
+  End,
   Center,
   Stretch,
   SpaceBetween,
   SpaceAround,
 }
 
-export enum Direction {
-  Inherit,
-  LTR,
-  RTL,
-}
-
 export enum Display {
   Flex,
+  Grid,
   None,
 }
 
@@ -44,22 +62,25 @@ export enum FlexDirection {
   ColumnReverse,
 }
 
+export enum GridAutoFlow {
+  Row,
+  Column,
+  RowDense,
+  ColumnDense,
+}
+
 export enum JustifyContent {
   FlexStart,
   FlexEnd,
+  Start,
+  End,
   Center,
   SpaceBetween,
   SpaceAround,
   SpaceEvenly,
 }
 
-export enum Overflow {
-  Visible,
-  Hidden,
-  Scroll,
-}
-
-export enum PositionType {
+export enum Position {
   Relative,
   Absolute,
 }
@@ -69,26 +90,33 @@ export enum FlexWrap {
   Wrap,
   WrapReverse,
 }
+
+/**
+ * Allocator class
+ */
 export class Allocator {
+  /**
+   * Free's the memory
+   */
   free(): void;
   constructor();
 }
 
 export interface Styles {
   display: Display;
-  positionType: PositionType;
-  direction: Direction;
+  position: Position;
   flexDirection: FlexDirection;
   flexWrap: FlexWrap;
-  overflow: Overflow;
   alignItems: AlignItems;
   alignSelf: AlignSelf;
   alignContent: AlignContent;
   justifyContent: JustifyContent;
-  start: string | number;
-  end: string | number;
-  top: string | number;
-  bottom: string | number;
+  justifySelf: JustifySelf;
+  justifyItems: JustifyItems;
+  insetStart: string | number;
+  insetEnd: string | number;
+  insetTop: string | number;
+  insetBottom: string | number;
   marginStart: string | number;
   marginEnd: string | number;
   marginTop: string | number;
@@ -104,6 +132,8 @@ export interface Styles {
   flexGrow: number;
   flexShrink: number;
   flexBasis: string | number;
+  gapWidth: string | number;
+  gapHeight: string | number;
   width: string | number;
   height: string | number;
   minWidth: string | number;
@@ -113,73 +143,111 @@ export interface Styles {
   aspectRatio: number;
 }
 
+/**
+ * Layout class
+ */
 export class Layout {
-  free(): void;
   /**
-   * @param {number} at
-   * @returns {Layout}
+   * Free's the layout of its children
+   */
+  free(): void;
+
+  /**
+   * Gets a child at the given index
    */
   child(at: number): Layout;
-  /** */
+
+  /**
+   * Number of children
+   */
   readonly childCount: number;
-  /** */
+
+  /**
+   * Height in pixels
+   */
   readonly height: number;
-  /** */
+
+  /**
+   * Width in pixels
+   */
   readonly width: number;
-  /** */
+
+  /**
+   * X coordinate
+   */
   readonly x: number;
-  /** */
+
+  /**
+   * Y coordinate
+   */
   readonly y: number;
 }
 
+/**
+ * Node class
+ */
 export class Node {
+  /**
+   * Free's the node of its children
+   */
   free(): void;
-  /**
-   * @param {Allocator} allocator
-   * @param {any} style
-   */
   constructor(allocator: Allocator, style: Partial<Styles>);
+
   /**
-   * @param {any} measure
+   * Sets the measure
    */
-  setMeasure(measure: any): void;
+  setMeasure(measure: unknown): void;
+
   /**
-   * @param {Node} child
+   * Add a child node to the node
    */
   addChild(child: Node): void;
+
   /**
-   * @param {Node} child
+   * Removes the child from the node
    */
   removeChild(child: Node): void;
+
   /**
-   * @param {number} index
-   * @param {Node} child
+   * Replaces the child at the current index with another child
    */
   replaceChildAtIndex(index: number, child: Node): void;
+
   /**
-   * @param {number} index
+   * Removes child at the given index
    */
   removeChildAtIndex(index: number): void;
+
   /**
-   * @returns {Partial<Styles>}
+   * Gets the node's styles
    */
   getStyle(): Partial<Styles>;
+
   /**
-   * @param {Partial<Styles>} style
+   * Sets the styles of the current node
    */
   setStyle(style: Partial<Styles>): void;
-  /** */
-  markDirty(): void;
+
   /**
-   * @returns {boolean}
+   * Marks the node as dirty
+   */
+  markDirty(): void;
+
+  /**
+   * Whether the node is dirty
    */
   isDirty(): boolean;
+
   /**
-   * @param {any} size
-   * @returns {Layout}
+   * Computes the layout for the node and its children
    */
-  computeLayout(size?: any): Layout;
-  /** */
+  computeLayout(
+    size?: { width: "max" | "min" | number; height: "max" | "min" | number },
+  ): Layout;
+
+  /**
+   * The amount of children that belong to this node
+   */
   readonly childCount: number;
 }
 
@@ -242,5 +310,4 @@ export default function init(
   module_or_path?: InitInput | Promise<InitInput>,
 ): Promise<InitOutput>;
 
-
-export const source: any;
+export const source: Uint8Array;

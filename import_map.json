@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "https://deno.land/x/gelatin/mod.ts": "./mod.ts"
+  }
+}
