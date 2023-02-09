@@ -113,6 +113,13 @@ export interface Styles {
   justifyContent: JustifyContent;
   justifySelf: JustifySelf;
   justifyItems: JustifyItems;
+  // gridTemplateRows: unknown,
+  // gridTemplateColumns: unknown,
+  // gridAutoRows: unknown,
+  // gridAutoColumns: unknown,
+  gridAutoFlow: GridAutoFlow;
+  // gridRow: unknown,
+  // gridColumn: unknown,
   insetStart: string | number;
   insetEnd: string | number;
   insetTop: string | number;
