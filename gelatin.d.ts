@@ -120,20 +120,20 @@ export interface Styles {
   gridAutoFlow: GridAutoFlow;
   // gridRow: unknown,
   // gridColumn: unknown,
-  insetStart: string | number;
-  insetEnd: string | number;
+  insetLeft: string | number;
+  insetRight: string | number;
   insetTop: string | number;
   insetBottom: string | number;
-  marginStart: string | number;
-  marginEnd: string | number;
+  marginLeft: string | number;
+  marginRight: string | number;
   marginTop: string | number;
   marginBottom: string | number;
-  paddingStart: string | number;
-  paddingEnd: string | number;
+  paddingLeft: string | number;
+  paddingRight: string | number;
   paddingTop: string | number;
   paddingBottom: string | number;
-  borderStart: string | number;
-  borderEnd: string | number;
+  borderLeft: string | number;
+  borderRight: string | number;
   borderTop: string | number;
   borderBottom: string | number;
   flexGrow: number;
