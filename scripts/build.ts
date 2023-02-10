@@ -36,8 +36,7 @@ export async function build() {
   console.log(`read js (size: ${init.length} bytes)`);
 
   const source =
-    `import { decode } from "https://deno.land/std@0.145.0/encoding/base64.ts";
-export const source = decode("${encoded}");
+    `export const source = Deno[Deno.internal].core.ops.op_base64_decode(${encoded});
 ${init}`;
   console.log(`inlined js and wasm (size: ${source.length} bytes)`);
 

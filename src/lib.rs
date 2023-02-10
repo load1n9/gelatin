@@ -320,7 +320,6 @@ impl From<i32> for GridAutoFlow {
     }
 }
 
-
 #[wasm_bindgen]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -505,7 +504,7 @@ impl Node {
             node: allocator
                 .taffy
                 .borrow_mut()
-                .new_with_children(parse_style(&style), &Vec::new())
+                .new_leaf(parse_style(&style))
                 .unwrap(),
             style: style.clone(),
             childCount: 0,
@@ -629,6 +628,11 @@ impl Node {
         self.allocator.taffy.borrow().dirty(self.node).unwrap()
     }
 
+    #[wasm_bindgen(js_name = isChildless)]
+    pub fn is_childless(&mut self) -> bool {
+        self.allocator.taffy.borrow_mut().is_childless(self.node)
+    }
+
     #[wasm_bindgen(js_name = computeLayout)]
     pub fn compute_layout(&mut self, size: &JsValue) -> Layout {
         self.allocator
@@ -683,8 +687,8 @@ fn parse_style(style: &JsValue) -> taffy::style::Style {
         grid_auto_rows: Default::default(),
         grid_auto_columns: Default::default(),
         grid_auto_flow: get_i32(style, "gridAutoFlow")
-        .map(|i| GridAutoFlow::from(i).into())
-        .unwrap_or_default(),
+            .map(|i| GridAutoFlow::from(i).into())
+            .unwrap_or_default(),
         grid_row: Default::default(),
         grid_column: Default::default(),
         inset: taffy::geometry::Rect {

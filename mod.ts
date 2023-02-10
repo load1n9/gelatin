@@ -10,4 +10,12 @@ export async function load(): Promise<void> {
     loaded = true;
   }
 }
+
+export function loadSync() {
+  if (!loaded) {
+    wasm.initSync(wasm.source);
+    loaded = true;
+  }
+}
+
 export * from "./src/wasm.js";

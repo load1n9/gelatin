@@ -102,52 +102,237 @@ export class Allocator {
   constructor();
 }
 
+/**
+ * The flexbox layout information for a single Node
+ */
 export interface Styles {
+  /**
+   * What layout strategy should be used?
+   */
   display: Display;
+
+  /**
+   * The positioning strategy for this item.
+   *
+   * This controls both how the origin is determined for the [`Style::position`] field,
+   * and whether or not the item will be controlled by flexbox's layout algorithm.
+   */
   position: Position;
-  flexDirection: FlexDirection;
-  flexWrap: FlexWrap;
-  alignItems: AlignItems;
-  alignSelf: AlignSelf;
-  alignContent: AlignContent;
-  justifyContent: JustifyContent;
-  justifySelf: JustifySelf;
-  justifyItems: JustifyItems;
-  // gridTemplateRows: unknown,
-  // gridTemplateColumns: unknown,
-  // gridAutoRows: unknown,
-  // gridAutoColumns: unknown,
-  gridAutoFlow: GridAutoFlow;
-  // gridRow: unknown,
-  // gridColumn: unknown,
+
+  /**
+   * How should the position of this element be tweaked relative to the layout defined?
+   */
   insetLeft: string | number;
+
+  /**
+   * How should the position of this element be tweaked relative to the layout defined?
+   */
   insetRight: string | number;
+
+  /**
+   * How should the position of this element be tweaked relative to the layout defined?
+   */
   insetTop: string | number;
+
+  /**
+   * How should the position of this element be tweaked relative to the layout defined?
+   */
   insetBottom: string | number;
-  marginLeft: string | number;
-  marginRight: string | number;
-  marginTop: string | number;
-  marginBottom: string | number;
-  paddingLeft: string | number;
-  paddingRight: string | number;
-  paddingTop: string | number;
-  paddingBottom: string | number;
-  borderLeft: string | number;
-  borderRight: string | number;
-  borderTop: string | number;
-  borderBottom: string | number;
-  flexGrow: number;
-  flexShrink: number;
-  flexBasis: string | number;
-  gapWidth: string | number;
-  gapHeight: string | number;
+
+  /**
+   * Sets the initial width of the item
+   */
   width: string | number;
+
+  /**
+   * Sets the initial height of the item
+   */
   height: string | number;
+
+  /**
+   * Controls the minimum width of the item
+   */
   minWidth: string | number;
+
+  /**
+   * Controls the minimum height of the item
+   */
   minHeight: string | number;
+
+  /**
+   * Controls the maximum width of the item
+   */
   maxWidth: string | number;
+
+  /**
+   * Controls the maximum height of the item
+   */
   maxHeight: string | number;
+
+  /**
+   * The ratio is calculated as width divided by height.
+   */
   aspectRatio: number;
+
+  /**
+   * How large should the margin be on the left?
+   */
+  marginLeft: string | number;
+
+  /**
+   * How large should the margin be on the right?
+   */
+  marginRight: string | number;
+
+  /**
+   * How large should the margin be on the top?
+   */
+  marginTop: string | number;
+
+  /**
+   * How large should the margin be on the bottom?
+   */
+  marginBottom: string | number;
+
+  /**
+   * How large should the padding be on the left?
+   */
+  paddingLeft: string | number;
+
+  /**
+   * How large should the padding be on the right?
+   */
+  paddingRight: string | number;
+
+  /**
+   * How large should the padding be on the top?
+   */
+  paddingTop: string | number;
+
+  /**
+   * How large should the padding be on the bottom?
+   */
+  paddingBottom: string | number;
+
+  /**
+   * How large should the border be on the left?
+   */
+  borderLeft: string | number;
+
+  /**
+   * How large should the border be on the right?
+   */
+  borderRight: string | number;
+
+  /**
+   * How large should the border be on the top?
+   */
+  borderTop: string | number;
+
+  /**
+   * How large should the border be on the bottom?
+   */
+  borderBottom: string | number;
+
+  /**
+   * How this node's children aligned in the cross/block axis?
+   */
+  alignItems: AlignItems;
+
+  /**
+   * How this node should be aligned in the cross/block axis
+   */
+  alignSelf: AlignSelf;
+
+  /**
+   * How this node's children should be aligned in the inline axis
+   */
+  justifyItems: JustifyItems;
+
+  /**
+   * How this node should be aligned in the inline axis
+   */
+  justifySelf: JustifySelf;
+
+  /**
+   * How should content contained within this item be aligned in the cross/block axis
+   */
+  alignContent: AlignContent;
+
+  /**
+   * How should contained within this item be aligned in the main/inline axis
+   */
+  justifyContent: JustifyContent;
+
+  /**
+   * How large should the width of thegaps between items in a grid or flex container be?
+   */
+  gapWidth: string | number;
+
+  /**
+   * How large should the height of the gaps between items in a grid or flex container be?
+   */
+  gapHeight: string | number;
+
+  /**
+   * Which direction does the main axis flow in?
+   */
+  flexDirection: FlexDirection;
+
+  /**
+   * Should elements wrap, or stay in a single line?
+   */
+  flexWrap: FlexWrap;
+
+  /**
+   * Sets the initial main axis size of the item
+   */
+  flexBasis: string | number;
+
+  /**
+   * The relative rate at which this item grows when it is expanding to fill space
+   */
+  flexGrow: number;
+
+  /**
+   * The relative rate at which this item shrinks when it is contracting to fit into space
+   */
+  flexShrink: number;
+
+  /**
+   * UNIMPLEMENTED: Defines the track sizing functions (widths) of the grid rows
+   */
+  gridTemplateRows: undefined;
+
+  /**
+   * UNIMPLEMENTED: Defines the track sizing functions (heights) of the grid columns
+   */
+  gridTemplateColumns: undefined;
+
+  /**
+   * UNIMPLEMENTED: Defines the size of implicitly created rows
+   */
+  gridAutoRows: undefined;
+
+  /**
+   * UNIMPLEMENTED: Defined the size of implicitly created columns
+   */
+  gridAutoColumns: undefined;
+
+  /**
+   * Controls how items get placed into the grid for auto-placed items
+   */
+  gridAutoFlow: GridAutoFlow;
+
+  /**
+   * UNIMPLEMENTED: Defines which row in the grid the item should start and end at
+   */
+  gridRow: undefined;
+
+  /**
+   * UNIMPLEMENTED: Defines which column in the grid the item should start and end at
+   */
+  gridColumn: undefined;
 }
 
 /**
@@ -244,6 +429,11 @@ export class Node {
    * Whether the node is dirty
    */
   isDirty(): boolean;
+
+  /**
+   * Whether the node is childless
+   */
+  isChildless(): boolean;
 
   /**
    * Computes the layout for the node and its children
